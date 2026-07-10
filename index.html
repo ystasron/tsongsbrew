@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tsong's Bae-sik Brew — Iba</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Sacramento&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --cream: #FBF3E6;
+    --cream-deep: #F3E5CC;
+    --espresso: #2E1F17;
+    --espresso-soft: #4A362A;
+    --caramel: #D98C3F;
+    --caramel-deep: #B85C2E;
+    --maroon: #7A2A2A;
+    --tan: #EDD9BB;
+    --line: rgba(46,31,23,0.14);
+    --radius: 14px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--espresso);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+
+  .shout{
+    font-family:'Anton', sans-serif;
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+  }
+  .script{
+    font-family:'Sacramento', cursive;
+    font-weight:400;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:linear-gradient(100deg, var(--caramel) 0%, var(--caramel-deep) 100%);
+    box-shadow:0 2px 14px rgba(46,31,23,0.18);
+  }
+  .nav-wrap{
+    max-width:1140px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px;
+  }
+  .logo-slot{
+    width:52px; height:52px; border-radius:50%;
+    border:2px dashed rgba(255,255,255,0.75);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:9px; font-weight:700; text-align:center;
+    letter-spacing:0.05em; text-transform:uppercase;
+    background:rgba(255,255,255,0.08);
+    flex-shrink:0;
+  }
+  /* To use your own logo: replace the .logo-slot div below with
+     <img src="your-logo.png" alt="Tsong's Bae-sik Brew logo" class="logo-slot" style="border:none;"> */
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-name{color:#fff;}
+  .brand-name .top{font-size:1.5rem; line-height:1;}
+  .brand-name .bottom{font-size:0.72rem; letter-spacing:0.14em; opacity:0.92;}
+  nav ul{list-style:none; display:flex; gap:28px; margin:0; padding:0;}
+  nav a{
+    color:#fff; text-decoration:none; font-weight:600; font-size:0.92rem;
+    letter-spacing:0.02em; opacity:0.92; transition:opacity 0.2s;
+  }
+  nav a:hover, nav a:focus-visible{opacity:1; text-decoration:underline;}
+  .nav-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding:76px 24px 90px;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(217,140,63,0.18), transparent 55%),
+      var(--cream);
+  }
+  .hero-inner{
+    max-width:1140px; margin:0 auto;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--tan); color:var(--maroon); font-weight:700;
+    font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    padding:6px 14px; border-radius:999px; margin-bottom:18px;
+  }
+  .hero h1{
+    margin:0 0 6px; font-size:4.6rem; line-height:0.95; color:var(--espresso);
+  }
+  .hero h1 .script{
+    display:block; font-size:3.2rem; color:var(--maroon); margin-bottom:2px;
+  }
+  .hero p.tagline{
+    font-size:1.15rem; color:var(--espresso-soft); max-width:460px; margin:20px 0 30px;
+  }
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 24px; border-radius:999px; font-weight:700; font-size:0.95rem;
+    text-decoration:none; border:2px solid transparent; cursor:pointer;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover, .btn:focus-visible{transform:translateY(-2px);}
+  .btn-primary{background:var(--maroon); color:#fff; box-shadow:0 6px 0 #4d1c1c;}
+  .btn-primary:hover{box-shadow:0 4px 0 #4d1c1c;}
+  .btn-outline{background:transparent; border-color:var(--espresso); color:var(--espresso);}
+
+  .pickup-note{
+    margin-top:26px; font-size:0.88rem; color:var(--espresso-soft);
+    display:flex; gap:8px; align-items:flex-start;
+  }
+
+  .cup-scene{position:relative; display:flex; justify-content:center;}
+  .cup-scene svg{width:100%; max-width:340px; height:auto;}
+  .steam{transform-origin:center bottom; animation:rise 3.2s ease-in-out infinite;}
+  .steam.d2{animation-delay:0.6s;}
+  .steam.d3{animation-delay:1.2s;}
+  @keyframes rise{
+    0%{opacity:0; transform:translateY(0) scaleY(0.9);}
+    30%{opacity:0.8;}
+    100%{opacity:0; transform:translateY(-38px) scaleY(1.15);}
+  }
+  .pearl{animation:bob 3s ease-in-out infinite;}
+  .pearl.p2{animation-delay:0.4s;}
+  .pearl.p3{animation-delay:0.9s;}
+  @keyframes bob{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+  }
+
+  section{padding:80px 24px;}
+  .section-inner{max-width:1140px; margin:0 auto;}
+  .section-head{text-align:center; margin-bottom:44px;}
+  .section-head .eyebrow{margin-bottom:10px;}
+  .section-head h2{font-size:2.6rem; margin:0; color:var(--espresso);}
+  .section-head p{color:var(--espresso-soft); max-width:520px; margin:10px auto 0;}
+
+  /* ---------- ABOUT / HOW IT WORKS ---------- */
+  .about{background:var(--tan);}
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .step-card{
+    background:var(--cream); border-radius:var(--radius); padding:28px 24px;
+    border:1px solid var(--line);
+  }
+  .step-card .mark{font-family:'Anton',sans-serif; font-size:1rem; color:var(--maroon); margin-bottom:10px;}
+  .step-card h3{margin:0 0 8px; font-size:1.2rem;}
+  .step-card p{margin:0; color:var(--espresso-soft); font-size:0.94rem; line-height:1.55;}
+
+  /* ---------- MENU ---------- */
+  .menu-tabs{
+    display:flex; justify-content:center; gap:10px; margin-bottom:36px; flex-wrap:wrap;
+  }
+  .menu-tab{
+    background:transparent; border:2px solid var(--espresso); color:var(--espresso);
+    padding:10px 22px; border-radius:999px; font-weight:700; font-family:inherit;
+    font-size:0.92rem; cursor:pointer; transition:all 0.2s;
+  }
+  .menu-tab.active, .menu-tab:hover, .menu-tab:focus-visible{
+    background:var(--maroon); border-color:var(--maroon); color:#fff;
+  }
+
+  .menu-panel{display:none;}
+  .menu-panel.active{display:block;}
+
+  .menu-board{
+    background:#fff; border-radius:18px; overflow:hidden;
+    border:1px solid var(--line); box-shadow:0 10px 30px rgba(46,31,23,0.08);
+  }
+  .board-strip{
+    height:14px; background:linear-gradient(100deg, var(--caramel) 0%, var(--caramel-deep) 100%);
+  }
+  .board-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:0;
+  }
+  .board-col{
+    padding:28px 26px; border-right:1px dashed var(--line); border-bottom:1px dashed var(--line);
+  }
+  .board-col:last-child{border-right:none;}
+  .col-head{
+    display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px;
+    border-bottom:2px solid var(--maroon); padding-bottom:8px;
+  }
+  .col-head h3{margin:0; color:var(--maroon); font-size:1.05rem; text-transform:uppercase; letter-spacing:0.03em;}
+  .col-head .price{font-weight:700; font-size:0.85rem; color:var(--espresso-soft); white-space:nowrap;}
+  .board-col ul{list-style:none; margin:0; padding:0;}
+  .board-col li{
+    padding:5px 0; font-size:0.93rem; color:var(--espresso-soft);
+    border-bottom:1px solid rgba(46,31,23,0.06);
+  }
+  .board-col li:last-child{border-bottom:none;}
+  .board-col li strong{color:var(--espresso); font-weight:600;}
+
+  .addons{
+    margin-top:26px; background:var(--espresso); color:var(--cream);
+    border-radius:var(--radius); padding:20px 26px;
+    display:flex; gap:24px; flex-wrap:wrap; font-size:0.88rem;
+  }
+  .addons b{color:var(--caramel);}
+
+  /* ---------- GALLERY ---------- */
+  .gallery{background:var(--tan);}
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
+  }
+  .photo-slot{
+    aspect-ratio:1/1; border-radius:6px; position:relative;
+    background:linear-gradient(150deg, var(--cream-deep), var(--tan));
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--espresso-soft); font-size:0.78rem; text-align:center; padding:16px;
+    box-shadow:0 6px 14px rgba(46,31,23,0.10);
+    transform:rotate(var(--r,0deg));
+  }
+  .photo-slot:nth-child(2n){--r:1.4deg;}
+  .photo-slot:nth-child(3n){--r:-1.6deg;}
+  .photo-slot:nth-child(5n){--r:1deg;}
+  .photo-slot::before{
+    content:"";
+    position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(-3deg);
+    width:56px; height:20px; background:rgba(217,140,63,0.55);
+    border-radius:2px;
+  }
+  /* To add real photos: replace a .photo-slot div with
+     <div class="photo-slot" style="padding:0;"><img src="your-photo.jpg" alt="..."></div> */
+
+  /* ---------- VISIT ---------- */
+  .visit{
+    background:var(--espresso); color:var(--cream);
+  }
+  .visit .section-head h2{color:var(--cream);}
+  .visit .section-head p{color:rgba(251,243,230,0.7);}
+  .visit-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:32px;
+  }
+  .visit-card{
+    background:rgba(251,243,230,0.06); border:1px solid rgba(251,243,230,0.14);
+    border-radius:var(--radius); padding:30px;
+  }
+  .visit-card h3{margin:0 0 10px; color:var(--caramel); font-size:1.15rem;}
+  .visit-card p{margin:0 0 18px; color:rgba(251,243,230,0.78); line-height:1.6; font-size:0.95rem;}
+  .fb-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--caramel); color:var(--espresso); font-weight:700;
+    padding:12px 22px; border-radius:999px; text-decoration:none; font-size:0.92rem;
+  }
+  .fb-btn:hover, .fb-btn:focus-visible{background:#e6a866;}
+
+  footer{
+    background:var(--espresso); color:rgba(251,243,230,0.55);
+    text-align:center; padding:26px 24px; font-size:0.82rem;
+    border-top:1px solid rgba(251,243,230,0.1);
+  }
+
+  @media (max-width:860px){
+    .nav-wrap nav{display:none;}
+    .hero-inner{grid-template-columns:1fr;}
+    .hero h1{font-size:3.1rem;}
+    .hero h1 .script{font-size:2.3rem;}
+    .steps{grid-template-columns:1fr;}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .visit-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">
+      <div class="logo-slot">LOGO</div>
+      <div class="brand-name">
+        <div class="top script">Tsong's</div>
+        <div class="bottom shout">Bae-sik Brew · Iba</div>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#visit">Visit Us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">☕ Iba's neighborhood milk tea &amp; coffee stop</span>
+      <h1><span class="script">Tsong's</span>Bae-sik<br>Brew</h1>
+      <p class="tagline">Basic name, bae-sik taste. Milk tea, coffee, frappes and snacks made the way your bae would order them — no frills, all flavor.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://www.facebook.com/profile.php?id=100093377273620" target="_blank" rel="noopener">Message us to order</a>
+        <a class="btn btn-outline" href="#menu">See the full menu</a>
+      </div>
+      <p class="pickup-note">📍 Drop by our stall or DM us ahead for pickup — early orders welcome, walk-ins always okay.</p>
+    </div>
+    <div class="cup-scene">
+      <svg viewBox="0 0 300 340" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path class="steam" d="M110 40 C100 20, 120 10, 112 0" stroke="#B85C2E" stroke-width="5" stroke-linecap="round"/>
+        <path class="steam d2" d="M150 40 C140 15, 162 10, 152 -8" stroke="#B85C2E" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+        <path class="steam d3" d="M190 40 C182 20, 200 10, 190 0" stroke="#B85C2E" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="150" cy="70" rx="66" ry="14" fill="#EDD9BB"/>
+        <path d="M84 70 L100 260 Q150 280 200 260 L216 70 Z" fill="#FBF3E6" stroke="#2E1F17" stroke-width="4"/>
+        <path d="M96 100 L204 100 L192 250 Q150 266 108 250 Z" fill="#D9A66B" opacity="0.5"/>
+        <circle class="pearl" cx="120" cy="235" r="9" fill="#3B2A21"/>
+        <circle class="pearl p2" cx="150" cy="245" r="9" fill="#3B2A21"/>
+        <circle class="pearl p3" cx="180" cy="235" r="9" fill="#3B2A21"/>
+        <rect x="60" y="66" width="12" height="70" rx="6" fill="none" stroke="#2E1F17" stroke-width="4"/>
+        <ellipse cx="150" cy="70" rx="66" ry="14" fill="none" stroke="#2E1F17" stroke-width="4"/>
+        <rect x="145" y="30" width="10" height="220" rx="5" fill="#7A2A2A"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="section-inner">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Pickup, made easy</h2>
+      <p>No delivery hassle — just good drinks and food, ready when you are.</p>
+    </div>
+    <div class="steps">
+      <div class="step-card">
+        <div class="mark">DROP BY</div>
+        <h3>Walk in anytime</h3>
+        <p>Swing by the stall in Iba — browse the board, order at the counter, and we'll have it ready in minutes.</p>
+      </div>
+      <div class="step-card">
+        <div class="mark">DM AHEAD</div>
+        <h3>Order early</h3>
+        <p>Message us on Facebook with your order and pickup time so it's ready the moment you arrive.</p>
+      </div>
+      <div class="step-card">
+        <div class="mark">PICKUP ONLY</div>
+        <h3>Grab &amp; go</h3>
+        <p>All orders are for pickup — no delivery service for now, so plan to swing by in person.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="section-inner">
+    <div class="section-head">
+      <span class="eyebrow">The board</span>
+      <h2>Menu</h2>
+      <p>Everything on the board, straight from the shop.</p>
+    </div>
+
+    <div class="menu-tabs">
+      <button class="menu-tab active" data-tab="drinks">Drinks</button>
+      <button class="menu-tab" data-tab="food">Food</button>
+    </div>
+
+    <div class="menu-panel active" id="drinks">
+      <div class="menu-board">
+        <div class="board-strip"></div>
+        <div class="board-grid">
+
+          <div class="board-col">
+            <div class="col-head"><h3>Coffee</h3><span class="price">₱55 / ₱65</span></div>
+            <ul>
+              <li><strong>Iced Latte</strong></li>
+              <li>Tsong's Kopi</li><li>Caramel Macchiato</li><li>Vanilla</li><li>Mocha</li>
+              <li>White Chocolate</li><li>Hazelnut</li><li>Butterscotch</li><li>Almond</li>
+              <li>Brown Sugar</li><li>Salted Caramel</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Iced Americano</h3><span class="price">₱55 / ₱65</span></div>
+            <ul>
+              <li><strong>Tsong's Americano</strong></li>
+              <li>Vanilla</li><li>Caramel</li><li>Hazelnut</li><li>Brown Sugar</li>
+              <li>White Chocolate</li><li>Almond</li><li>Butterscotch</li><li>Chocolate</li>
+              <li>Salted Caramel</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Special Series</h3><span class="price">₱75</span></div>
+            <ul>
+              <li>Dark Mochaccino (Coffee)</li><li>Dirty Matcha Latte (Coffee)</li>
+              <li>Red Velvet Latte (Coffee)</li><li>Dark Chocolate</li>
+              <li>Milky Matcha with Pearl</li><li>Red Velvet Cream Cheese</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Frappe</h3><span class="price">₱99</span></div>
+            <ul>
+              <li>Strawberry Cream</li><li>Blueberry Cream</li><li>Mango Cream</li>
+              <li>Cookies &amp; Cream</li><li>Taro</li><li>Red Velvet</li>
+              <li>Dark Chocolate</li><li>Matcha</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Special Series Frappe</h3><span class="price">₱109</span></div>
+            <ul>
+              <li>Java Chips</li><li>Dark Mochaccino</li><li>Dirty Matcha</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Frappuccino</h3><span class="price">₱99</span></div>
+            <ul>
+              <li>Caramel</li><li>Salted Caramel</li><li>Mocha</li><li>White Mocha</li>
+              <li>Vanilla</li><li>Almond</li><li>Hazelnut</li><li>Butterscotch</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Non-Caffeinated<br>Fruit Milk</h3><span class="price">₱65 / ₱75</span></div>
+            <ul>
+              <li>Strawberry</li><li>Blueberry</li><li>Mango</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Hot Drinks</h3><span class="price">₱40</span></div>
+            <ul>
+              <li>Tsong's Barako</li><li>Chocolate</li><li>Vanilla</li><li>Caramel</li>
+              <li>Hazelnut</li><li>White Chocolate</li><li>Butterscotch</li><li>Almond</li>
+              <li>Salted Caramel</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Special Series Hot</h3><span class="price">₱55</span></div>
+            <ul>
+              <li>Matcha</li><li>Dirty Matcha</li><li>Dark Mocha</li><li>Dark Chocolate</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Milk Tea with Pearl</h3><span class="price">₱55 / ₱65</span></div>
+            <ul>
+              <li><strong>Tsong's Pearl Milk Tea</strong></li>
+              <li>Brown Sugar</li><li>Okinawa</li><li>Hokkaido</li><li>Wintermelon</li>
+              <li>Cookies &amp; Cream</li><li>Chocolate</li><li>Taro</li><li>Blueberry</li><li>Strawberry</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Fruit Tea<br><span style="font-weight:400; font-size:0.7rem;">w/ fruit jelly or nata</span></h3><span class="price">₱55 / ₱65</span></div>
+            <ul>
+              <li>Lemon</li><li>Green Apple</li><li>Strawberry</li><li>Blueberry</li>
+              <li>Lychee</li><li>Passion Fruit</li><li>Mango</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="addons">
+        <span><b>Add-ons:</b></span>
+        <span>Coffee Shot ₱10</span><span>Pearl ₱10</span><span>Coffee Jelly ₱10</span>
+        <span>Fruit Jelly ₱10</span><span>Fruity Jam ₱15</span><span>Cream Cheese ₱15</span>
+        <span>Extra Flavor Shot ₱10</span>
+      </div>
+    </div>
+
+    <div class="menu-panel" id="food">
+      <div class="menu-board">
+        <div class="board-strip"></div>
+        <div class="board-grid">
+
+          <div class="board-col">
+            <div class="col-head"><h3>Pizza</h3></div>
+            <ul>
+              <li>Ham &amp; Cheese <span style="float:right;">₱105</span></li>
+              <li>Hawaiian <span style="float:right;">₱115</span></li>
+              <li>Pepperoni <span style="float:right;">₱115</span></li>
+              <li>Vegetarian <span style="float:right;">₱125</span></li>
+              <li>All Meat <span style="float:right;">₱145</span></li>
+              <li>Spicy Sisig <span style="float:right;">₱155</span></li>
+              <li>Overload <span style="float:right;">₱155</span></li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Empanada</h3></div>
+            <ul>
+              <li>Ham &amp; Cheese <span style="float:right;">₱18</span></li>
+              <li>Tuna <span style="float:right;">₱20</span></li>
+              <li>Pork <span style="float:right;">₱20</span></li>
+              <li>Chicken <span style="float:right;">₱20</span></li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Fries</h3><span class="price">₱59</span></div>
+            <ul>
+              <li>Choice of Sour Cream, Cheese, or BBQ</li>
+            </ul>
+          </div>
+
+          <div class="board-col">
+            <div class="col-head"><h3>Corndog</h3><span class="price">₱59</span></div>
+            <ul>
+              <li>Jr. or Jumbo</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="section-inner">
+    <div class="section-head">
+      <span class="eyebrow">Pictures</span>
+      <h2>From the shop</h2>
+      <p>A peek at the drinks, snacks, and stall — swap these in with your own photos anytime.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="photo-slot">Add photo<br>e.g. milk tea</div>
+      <div class="photo-slot">Add photo<br>e.g. frappe</div>
+      <div class="photo-slot">Add photo<br>e.g. the stall</div>
+      <div class="photo-slot">Add photo<br>e.g. pizza slice</div>
+      <div class="photo-slot">Add photo<br>e.g. hot brew</div>
+      <div class="photo-slot">Add photo<br>e.g. empanada</div>
+      <div class="photo-slot">Add photo<br>e.g. pearls &amp; jellies</div>
+      <div class="photo-slot">Add photo<br>e.g. happy customer</div>
+    </div>
+  </div>
+</section>
+
+<section class="visit" id="visit">
+  <div class="section-inner">
+    <div class="section-head">
+      <span class="eyebrow">Find us</span>
+      <h2>Visit or send a message</h2>
+      <p>We're based in Iba — pickup only, for now.</p>
+    </div>
+    <div class="visit-grid">
+      <div class="visit-card">
+        <h3>Drop by</h3>
+        <p>Come find the stall in Iba during operating hours. No reservation needed — just walk up and order.</p>
+      </div>
+      <div class="visit-card">
+        <h3>DM for early order</h3>
+        <p>Message our Facebook page with what you'd like and your pickup time. We'll have it ready when you arrive.</p>
+        <a class="fb-btn" href="https://www.facebook.com/profile.php?id=100093377273620" target="_blank" rel="noopener">Message on Facebook →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Tsong's Bae-sik Brew · Iba — Pickup only. Drop by or DM to order ahead.
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.menu-tab');
+  const panels = document.querySelectorAll('.menu-panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
